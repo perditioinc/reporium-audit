@@ -1,0 +1,46 @@
+name: Nightly Audit
+on:
+  schedule:
+    - cron: '0 8 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    env:
+      REPORIUM_API_URL: ${{ secrets.REPORIUM_API_URL }}
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
+
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - run: pip install -e .
+
+      - name: Run audit
+        run: python -m reporium_audit run
+
+      - name: Commit audit report
+        run: |
+          git config user.name 'perditio-bot'
+          git config user.email 'bot@perditio.com'
+          git add AUDIT_REPORT.md
+          git diff --staged --quiet && echo "No changes" || git commit -m "audit: nightly report $(date -u +%Y-%m-%d)"
+          git push
+
+      - name: Create issue on failure
+        if: failure()
+        run: |
+          gh issue create \
+            --title "Audit failure $(date -u +%Y-%m-%d)" \
+            --body "Nightly audit detected failures. See AUDIT_REPORT.md for details." \
+            --repo perditioinc/reporium-audit
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
