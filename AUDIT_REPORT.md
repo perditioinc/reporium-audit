@@ -1,8 +1,16 @@
-# Reporium Audit Report — 2026-03-20
+# Reporium Audit Report — 2026-03-21
 
 ## Summary
 
-✓ 13/13 checks passed
+✓ 11/13 checks passed | ✗ 1 failures | ⚠ 1 warnings
+
+## Failures
+
+- **reporium-api CI**: Nightly Sync from reporium-db: failure
+
+## Warnings
+
+- **perditioinc/repo-intelligence workflows**: No runs
 
 ## Full Results
 
@@ -11,15 +19,15 @@
 | reporium-api /health | ✓ PASS | {'status': 'ok', 'database': 'ok', 'cache': 'disabled', 'last_ingestion': None} |
 | reporium-api /repos | ✓ PASS | 826 repos |
 | reporium-api /search | ✓ PASS | 20 results |
-| reporium-db repo count | ✓ PASS | 826 repos |
-| reporium-db index.json fresh | ✓ PASS | Updated 1.3h ago |
+| reporium-db repo count | ✓ PASS | 831 repos |
+| reporium-db index.json fresh | ✓ PASS | Updated 2.5h ago |
 | forksync CI | ✓ PASS | Nightly Fork Sync: success |
-| reporium-db CI | ✓ PASS | Tests: success |
+| reporium-db CI | ✓ PASS | Nightly Sync: success |
 | reporium-dataset CI | ✓ PASS | Nightly README Update: success |
 | portfolio CI | ✓ PASS | Nightly Portfolio Update: success |
 | reporium-roadmap CI | ✓ PASS | Nightly Roadmap Update: success |
 | reporium-metrics CI | ✓ PASS | Nightly Metrics Collection: success |
-| repo-intelligence CI | ✓ PASS | Tests: success |
-| reporium-api CI | ✓ PASS | Tests: success |
+| perditioinc/repo-intelligence workflows | ⚠ WARN | No runs |
+| reporium-api CI | ✗ FAIL | Nightly Sync from reporium-db: failure |
 
-*Generated at 2026-03-20T08:26:45.427791+00:00*
+*Generated at 2026-03-21T08:17:28.474595+00:00*
