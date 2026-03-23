@@ -10,6 +10,7 @@ import sys
 from dotenv import load_dotenv
 
 from reporium_audit.checks.api import check_api
+from reporium_audit.checks.contract import check_contract
 from reporium_audit.checks.reporium_db import check_reporium_db
 from reporium_audit.checks.workflows import check_workflows
 from reporium_audit.reporter import generate_report
@@ -34,12 +35,14 @@ async def run_audit() -> str:
     logger.info("Running Reporium platform audit...")
 
     results = []
-    api_results, db_results, wf_results = await asyncio.gather(
+    api_results, contract_results, db_results, wf_results = await asyncio.gather(
         check_api(api_url),
+        check_contract(api_url),
         check_reporium_db(gh_token),
         check_workflows(gh_token),
     )
     results.extend(api_results)
+    results.extend(contract_results)
     results.extend(db_results)
     results.extend(wf_results)
 
