@@ -4,24 +4,28 @@ from __future__ import annotations
 
 import httpx
 
-REPOS = [
-    "perditioinc/forksync",
+ACTIVE_SUITE_REPOS = [
+    "perditioinc/reporium",
+    "perditioinc/reporium-api",
+    "perditioinc/reporium-audit",
     "perditioinc/reporium-db",
     "perditioinc/reporium-dataset",
-    "perditioinc/portfolio",
-    "perditioinc/reporium-roadmap",
+    "perditioinc/reporium-events",
+    "perditioinc/reporium-ingestion",
     "perditioinc/reporium-metrics",
-    "perditioinc/repo-intelligence",
-    "perditioinc/reporium-api",
+    "perditioinc/reporium-roadmap",
+    "perditioinc/reporium-scoring",
+    "perditioinc/reporium-security",
+    "perditioinc/reporium-system-design",
 ]
 
 
 async def check_workflows(token: str) -> list[dict]:
-    """Check latest workflow run status for all tracked repos."""
+    """Check latest workflow run status for the active Reporium suite repos."""
     results = []
     async with httpx.AsyncClient(timeout=15) as client:
         headers = {"Authorization": f"Bearer {token}", "Accept": "application/vnd.github.v3+json"}
-        for repo in REPOS:
+        for repo in ACTIVE_SUITE_REPOS:
             try:
                 r = await client.get(
                     f"https://api.github.com/repos/{repo}/actions/runs?per_page=1",
