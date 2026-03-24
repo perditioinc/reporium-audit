@@ -12,6 +12,7 @@
 ## What It Checks
 
 - reporium-api: /health, /repos, /search endpoints responding
+- /library/full contract: required fields, enriched field defaults, repo identity drift, and payload type stability
 - reporium-db: index.json freshness and repo count
 - All GitHub Actions workflows: pass/fail status across 8 repos
 
