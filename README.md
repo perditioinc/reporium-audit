@@ -13,7 +13,7 @@
 
 - reporium-api: /health, /repos, /search endpoints responding
 - reporium-db: index.json freshness and repo count
-- All GitHub Actions workflows: pass/fail status across 8 repos
+- All GitHub Actions workflows: pass/fail status across the active Reporium suite repos
 
 ## Usage
 
@@ -23,7 +23,8 @@ export GH_TOKEN=...
 python -m reporium_audit run
 ```
 
-Produces `AUDIT_REPORT.md` with full results table.
+Produces a local `AUDIT_REPORT.md` with the full results table.
+The report is generated at runtime and is not tracked in git.
 
 ## Nightly Schedule
 
