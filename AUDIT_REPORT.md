@@ -1,4 +1,4 @@
-# Reporium Audit Report — 2026-03-25
+# Reporium Audit Report — 2026-03-26
 
 ## Summary
 
@@ -8,9 +8,9 @@
 
 - **reporium-api /health**: 
 - **reporium-api /repos**: 
+- **reporium-api /search**: 
 - **contract: /library/full validation**: 
-- **reporium-db index.json fresh**: Updated 26.5h ago
-- **reporium-db CI**: Nightly Sync: failure
+- **reporium-api CI**: Keep Cloud Run warm: failure
 
 ## Warnings
 
@@ -22,17 +22,17 @@
 |-------|--------|--------|
 | reporium-api /health | ✗ FAIL |  |
 | reporium-api /repos | ✗ FAIL |  |
-| reporium-api /search | ✓ PASS | 20 results |
+| reporium-api /search | ✗ FAIL |  |
 | contract: /library/full validation | ✗ FAIL |  |
-| reporium-db repo count | ✓ PASS | 1459 repos |
-| reporium-db index.json fresh | ✗ FAIL | Updated 26.5h ago |
+| reporium-db repo count | ✓ PASS | 1467 repos |
+| reporium-db index.json fresh | ✓ PASS | Updated 2.3h ago |
 | forksync CI | ✓ PASS | Nightly Fork Sync: success |
-| reporium-db CI | ✗ FAIL | Nightly Sync: failure |
+| reporium-db CI | ✓ PASS | Nightly Sync: success |
 | reporium-dataset CI | ✓ PASS | Nightly README Update: success |
 | portfolio CI | ✓ PASS | Nightly Portfolio Update: success |
 | reporium-roadmap CI | ✓ PASS | Nightly Roadmap Update: success |
 | reporium-metrics CI | ✓ PASS | Nightly Metrics Collection: success |
 | perditioinc/repo-intelligence workflows | ⚠ WARN | No runs |
-| reporium-api CI | ✓ PASS | Keep Cloud Run warm: success |
+| reporium-api CI | ✗ FAIL | Keep Cloud Run warm: failure |
 
-*Generated at 2026-03-25T08:35:31.692629+00:00*
+*Generated at 2026-03-26T08:39:57.364995+00:00*
