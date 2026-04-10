@@ -1,14 +1,12 @@
-# Reporium Audit Report — 2026-04-09
+# Reporium Audit Report — 2026-04-10
 
 ## Summary
 
-✓ 12/16 checks passed | ✗ 3 failures | ⚠ 1 warnings
+✓ 14/16 checks passed | ✗ 1 failures | ⚠ 1 warnings
 
 ## Failures
 
 - **contract: no private/fork repos exposed**: 200 repos, 200 private/fork
-- **reporium-db index.json fresh**: Updated 73.9h ago
-- **reporium-db CI**: Nightly Sync: failure
 
 ## Warnings
 
@@ -24,10 +22,10 @@
 | contract: no private/fork repos exposed | ✗ FAIL | 200 repos, 200 private/fork |
 | contract: no null required fields | ✓ PASS | 0 nulls |
 | contract: no null enriched fields | ✓ PASS | 0 nulls |
-| reporium-db repo count | ✓ PASS | 1732 repos |
-| reporium-db index.json fresh | ✗ FAIL | Updated 73.9h ago |
+| reporium-db repo count | ✓ PASS | 1822 repos |
+| reporium-db index.json fresh | ✓ PASS | Updated 2.0h ago |
 | forksync CI | ✓ PASS | Nightly Fork Sync: success |
-| reporium-db CI | ✗ FAIL | Nightly Sync: failure |
+| reporium-db CI | ✓ PASS | Nightly Sync: success |
 | reporium-dataset CI | ✓ PASS | Nightly README Update: success |
 | portfolio CI | ✓ PASS | Nightly Portfolio Update: success |
 | reporium-roadmap CI | ✓ PASS | Nightly Roadmap Update: success |
@@ -35,4 +33,4 @@
 | perditioinc/repo-intelligence workflows | ⚠ WARN | No runs |
 | reporium-api CI | ✓ PASS | Keep Cloud Run warm: success |
 
-*Generated at 2026-04-09T08:57:03.225321+00:00*
+*Generated at 2026-04-10T08:57:44.170701+00:00*
