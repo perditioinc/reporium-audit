@@ -1,15 +1,19 @@
-# Reporium Audit Report — 2026-04-12
+# Reporium Audit Report — 2026-04-13
 
 ## Summary
 
-✓ 11/16 checks passed | ✗ 4 failures | ⚠ 1 warnings
+✓ 5/14 checks passed | ✗ 8 failures | ⚠ 1 warnings
 
 ## Failures
 
-- **contract: no private/fork repos exposed**: 200 repos, 200 private/fork
-- **reporium-db index.json fresh**: Updated 49.6h ago
+- **reporium-api /health**: {'status': 'degraded', 'db': 'error', 'detail': 'database check failed'}
+- **reporium-api /repos**: Expecting value: line 1 column 1 (char 0)
+- **reporium-api /search**: Expecting value: line 1 column 1 (char 0)
+- **contract: /library/full reachable**: HTTP 500
+- **reporium-db index.json fresh**: Updated 74.4h ago
 - **reporium-db CI**: Nightly Sync: failure
 - **portfolio CI**: Nightly Portfolio Update: failure
+- **reporium-api CI**: Nightly Sync from reporium-db: failure
 
 ## Warnings
 
@@ -19,14 +23,12 @@
 
 | Check | Status | Detail |
 |-------|--------|--------|
-| reporium-api /health | ✓ PASS | {'status': 'ok', 'db': 'ok'} |
-| reporium-api /repos | ✓ PASS | 1641 repos |
-| reporium-api /search | ✓ PASS | 20 results |
-| contract: no private/fork repos exposed | ✗ FAIL | 200 repos, 200 private/fork |
-| contract: no null required fields | ✓ PASS | 0 nulls |
-| contract: no null enriched fields | ✓ PASS | 0 nulls |
+| reporium-api /health | ✗ FAIL | {'status': 'degraded', 'db': 'error', 'detail': 'database check failed'} |
+| reporium-api /repos | ✗ FAIL | Expecting value: line 1 column 1 (char 0) |
+| reporium-api /search | ✗ FAIL | Expecting value: line 1 column 1 (char 0) |
+| contract: /library/full reachable | ✗ FAIL | HTTP 500 |
 | reporium-db repo count | ✓ PASS | 1822 repos |
-| reporium-db index.json fresh | ✗ FAIL | Updated 49.6h ago |
+| reporium-db index.json fresh | ✗ FAIL | Updated 74.4h ago |
 | forksync CI | ✓ PASS | Nightly Fork Sync: success |
 | reporium-db CI | ✗ FAIL | Nightly Sync: failure |
 | reporium-dataset CI | ✓ PASS | Nightly README Update: success |
@@ -34,6 +36,6 @@
 | reporium-roadmap CI | ✓ PASS | Nightly Roadmap Update: success |
 | reporium-metrics CI | ✓ PASS | Nightly Metrics Collection: success |
 | perditioinc/repo-intelligence workflows | ⚠ WARN | No runs |
-| reporium-api CI | ✓ PASS | Keep Cloud Run warm: success |
+| reporium-api CI | ✗ FAIL | Nightly Sync from reporium-db: failure |
 
-*Generated at 2026-04-12T08:34:44.730494+00:00*
+*Generated at 2026-04-13T09:23:09.737659+00:00*
