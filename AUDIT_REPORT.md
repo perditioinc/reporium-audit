@@ -1,19 +1,16 @@
-# Reporium Audit Report — 2026-04-14
+# Reporium Audit Report — 2026-04-15
 
 ## Summary
 
-✓ 5/14 checks passed | ✗ 8 failures | ⚠ 1 warnings
+✓ 8/14 checks passed | ✗ 5 failures | ⚠ 1 warnings
 
 ## Failures
 
-- **reporium-api /health**: {'status': 'degraded', 'db': 'error', 'detail': 'database check failed'}
-- **reporium-api /repos**: Expecting value: line 1 column 1 (char 0)
-- **reporium-api /search**: Expecting value: line 1 column 1 (char 0)
 - **contract: /library/full reachable**: HTTP 500
-- **reporium-db index.json fresh**: Updated 98.1h ago
+- **reporium-db index.json fresh**: Updated 122.1h ago
 - **reporium-db CI**: Nightly Sync: failure
 - **portfolio CI**: Nightly Portfolio Update: failure
-- **reporium-api CI**: Nightly Sync from reporium-db: failure
+- **reporium-api CI**: Tests: failure
 
 ## Warnings
 
@@ -23,12 +20,12 @@
 
 | Check | Status | Detail |
 |-------|--------|--------|
-| reporium-api /health | ✗ FAIL | {'status': 'degraded', 'db': 'error', 'detail': 'database check failed'} |
-| reporium-api /repos | ✗ FAIL | Expecting value: line 1 column 1 (char 0) |
-| reporium-api /search | ✗ FAIL | Expecting value: line 1 column 1 (char 0) |
+| reporium-api /health | ✓ PASS | {'status': 'ok', 'db': 'ok'} |
+| reporium-api /repos | ✓ PASS | 1641 repos |
+| reporium-api /search | ✓ PASS | 20 results |
 | contract: /library/full reachable | ✗ FAIL | HTTP 500 |
 | reporium-db repo count | ✓ PASS | 1822 repos |
-| reporium-db index.json fresh | ✗ FAIL | Updated 98.1h ago |
+| reporium-db index.json fresh | ✗ FAIL | Updated 122.1h ago |
 | forksync CI | ✓ PASS | Nightly Fork Sync: success |
 | reporium-db CI | ✗ FAIL | Nightly Sync: failure |
 | reporium-dataset CI | ✓ PASS | Nightly README Update: success |
@@ -36,6 +33,6 @@
 | reporium-roadmap CI | ✓ PASS | Nightly Roadmap Update: success |
 | reporium-metrics CI | ✓ PASS | Nightly Metrics Collection: success |
 | perditioinc/repo-intelligence workflows | ⚠ WARN | No runs |
-| reporium-api CI | ✗ FAIL | Nightly Sync from reporium-db: failure |
+| reporium-api CI | ✗ FAIL | Tests: failure |
 
-*Generated at 2026-04-14T09:07:12.545649+00:00*
+*Generated at 2026-04-15T09:08:01.380783+00:00*
