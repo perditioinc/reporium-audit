@@ -1,4 +1,4 @@
-# Reporium Audit Report — 2026-04-19
+# Reporium Audit Report — 2026-04-20
 
 ## Summary
 
@@ -7,7 +7,7 @@
 ## Failures
 
 - **contract: no private/fork repos exposed**: 200 repos, 200 private/fork
-- **reporium-db index.json fresh**: Updated 217.7h ago
+- **reporium-db index.json fresh**: Updated 242.5h ago
 - **reporium-db CI**: Nightly Sync: failure
 - **portfolio CI**: Nightly Portfolio Update: failure
 
@@ -26,7 +26,7 @@
 | contract: no null required fields | ✓ PASS | 0 nulls |
 | contract: no null enriched fields | ✓ PASS | 0 nulls |
 | reporium-db repo count | ✓ PASS | 1822 repos |
-| reporium-db index.json fresh | ✗ FAIL | Updated 217.7h ago |
+| reporium-db index.json fresh | ✗ FAIL | Updated 242.5h ago |
 | forksync CI | ✓ PASS | Nightly Fork Sync: success |
 | reporium-db CI | ✗ FAIL | Nightly Sync: failure |
 | reporium-dataset CI | ✓ PASS | Nightly README Update: success |
@@ -34,6 +34,6 @@
 | reporium-roadmap CI | ✓ PASS | Nightly Roadmap Update: success |
 | reporium-metrics CI | ✓ PASS | Nightly Metrics Collection: success |
 | perditioinc/repo-intelligence workflows | ⚠ WARN | No runs |
-| reporium-api CI | ✓ PASS | Keep Cloud Run warm: success |
+| reporium-api CI | ✓ PASS | Nightly Sync from reporium-db: success |
 
-*Generated at 2026-04-19T08:40:04.753168+00:00*
+*Generated at 2026-04-20T09:29:21.512110+00:00*
