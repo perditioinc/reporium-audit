@@ -1,9 +1,11 @@
 # Audit Hardening Lane — Morning Note (2026-04-26)
 
-**Lane window closed:** 2026-04-25 ~04:30 PDT (with scheduled +2h /
-+6h / +9h follow-ups; this note is the pre-written end-of-night view)
+**Lane window closed:** 2026-04-25 16:53 PDT (final +9h sweep)
 **Repo:** `reporium-audit`
-**Coordination branch:** `claude/feature/KAN-AUDIT-audit-hardening-lane`
+**Coordination branch:** `claude/feature/KAN-AUDIT-audit-hardening-lane` (HEAD `41afaa4`)
+**Checkin history:** 04:51 PDT initial draft → +2h checkin no-op (no
+append) → +6h fold-in 16:55 PDT (`41afaa4`) → +9h closing sweep
+16:53 PDT (back-to-back with +6h; both runs verified the same state)
 
 ---
 
@@ -94,14 +96,30 @@
    red or green. A workflow-file follow-on lane should decide whether
    a red run still commits the report or only opens the issue.
 
-8. **Sibling-lane facts not yet folded in.** This morning note is
-   pre-written before the +2h / +6h / +9h scheduled checkins fire.
-   Those checkins may merge sibling-PR facts (esp. from
-   reporium-api's same-day API merge gate) into the lane memos.
-   Read appended `**+2h update**` / `**+6h update**` /
-   `**+9h update**` blocks in
+8. **Sibling-lane state through end-of-window: quiescent.** The +6h
+   and +9h checkins ran (16:55 and 16:53 PDT respectively) and
+   confirmed:
+   - `reporium-api`: #441 / #440 / #439 / #438 / #436 / #434 all still
+     OPEN; #435 CLOSED (superseded by #441 — already known at lane
+     start). The morning brief's merge order (`#441 → #436 → #440 →
+     rest`) is still the correct queue; the operator did not pull the
+     trigger during this window.
+   - `reporium-ingestion`: #67 OPEN; no merges 2026-04-25.
+   - `reporium`: #273 OPEN, #272 CLOSED (superseded — known at lane
+     start); no merges.
+   - `reporium-roadmap`: #10 / #9 / #8 / #7 OPEN; no merges.
+   - Implication: every cross-PR reference in `docs/OPERATOR_GUIDE.md`
+     (`#436` Cloud Run tag cleanup, the dispatch table row, the §4
+     escalation notes) is still accurate. PR #11 and PR #12 each need
+     no patch and no rebase.
+   - The +2h checkin (intended ~06:30 PDT) appears not to have fired
+     against this file — there is no `**+2h update**` block in the
+     lane jira memo. This is a logging gap, not a state gap; the
+     +6h/+9h verification covers the same surface.
+   See the `+6h update (16:53 PDT)` and
+   `+9h end-of-window sweep (16:53 PDT)` blocks in
    [`audit-hardening-lane-jira.md`](../2026-04-25/audit-hardening-lane-jira.md)
-   before the next morning's standup.
+   for the per-surface verification table.
 
 ## What was deliberately NOT done this lane
 

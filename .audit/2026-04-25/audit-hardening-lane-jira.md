@@ -204,3 +204,71 @@ or PR #12 branches were warranted. State is stable and merge-ready.
   on `claude/feature/KAN-AUDIT-audit-hardening-lane` — `reporium_audit/`,
   `tests/`, `docs/OPERATOR_GUIDE.md`, and PR #12's branch were not
   modified.
+
+---
+
+## +9h end-of-window sweep (16:53 PDT)
+
+The +6h fold-in ran late (16:55 PDT instead of the intended ~10:30 PDT),
+so the +9h end-of-window sweep effectively fires back-to-back with +6h
+in the same wall-clock minute. Treating this as the final closing pass.
+
+**Final state on origin (verified 16:53 PDT):**
+
+| Surface | State at +9h |
+|---|---|
+| `origin/main` HEAD | `80d5352 audit: nightly report 2026-04-25` (unchanged all day) |
+| PR #12 head | `824cab69` — CLEAN, MERGEABLE, 0 reviews, last update 2026-04-25T11:49Z |
+| PR #11 head | `ebca5cf` — CLEAN, MERGEABLE, 0 reviews, last update 2026-04-25T11:50Z |
+| Coordination branch HEAD | `41afaa4` (this file's +6h commit) on `claude/feature/KAN-AUDIT-audit-hardening-lane` |
+| Open `reporium-audit` PRs | 2 (`#11`, `#12`) — both untouched by the operator since the lane's morning comments |
+
+**Sibling-lane state (none materially moved during the day):**
+
+`gh pr list --search "updated:>=2026-04-25"` per repo:
+
+- `reporium-api`: #441 / #440 / #439 / #438 / #436 / #434 all OPEN; #435
+  CLOSED (superseded by #441 — already known at lane start). Merge order
+  `#441 → #436 → #440 → rest` documented in the morning brief is still
+  the correct queue; operator did not pull the trigger.
+- `reporium-ingestion`: only #67 open; no merges.
+- `reporium`: #273 open, #272 closed (superseded — known at lane start);
+  no merges.
+- `reporium-roadmap`: #10 / #9 / #8 / #7 all OPEN; no merges.
+
+**Implication for `docs/OPERATOR_GUIDE.md`:** every cross-PR reference
+in the operator guide (`#436` Cloud Run tag cleanup, the dispatch table
+row, the §4 escalation notes) is **still accurate**. PR #11 needs no
+patch and no rebase. PR #12 needs no patch.
+
+**Lane disposition at end-of-window:**
+
+- PR #11: MERGE-READY (CLEAN/MERGEABLE on `ebca5cf`). Pre-merge spot
+  check unchanged: confirm `cloud_run_tags.py` and `leaks.py` exist on
+  `origin/main` after #12 lands; trivial README rebase needed.
+- PR #12: MERGE-READY (CLEAN/MERGEABLE on `824cab69`, 28/28 tests).
+  Live nightly on `main` (unchanged: 14/16 ✓ \| 1 ✗ \| 1 ⚠) continues
+  to demonstrate the dispatch-mask gap this PR closes.
+- Coordination branch: kept as-is on `41afaa4`. Optional docs-only PR;
+  next operator can decide.
+
+**Action taken at +9h:** appended this block; no commits to PR #11 or
+PR #12 branches; no PR comments posted (state did not change materially
+since the lane's morning comments — silence is the correct end-state).
+Morning note `.audit/2026-04-26/audit-hardening-morning-note.md`
+updated to reflect actual +2h/+6h/+9h checkin history (the +2h checkin
+never appended a block).
+
+**Stop conditions honored to lane close:**
+
+- No merge or deploy executed (PR #11, PR #12, and any sibling-lane
+  PRs all remain in operator's hands).
+- No edits outside `reporium-audit`.
+- All edits this sweep touched only `.audit/2026-04-25/audit-hardening-lane-jira.md`
+  and `.audit/2026-04-26/audit-hardening-morning-note.md` on
+  `claude/feature/KAN-AUDIT-audit-hardening-lane`.
+- No JIRA mirror posted: confirmed JIRA reachability is not part of
+  this workspace's wired tooling; falling back to the morning note as
+  the canonical handoff.
+
+🤖 Audit Hardening Lane — closing pass 2026-04-25 16:53 PDT
