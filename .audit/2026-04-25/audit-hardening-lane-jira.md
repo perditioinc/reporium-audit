@@ -139,3 +139,68 @@ implementation.
 - No merge or deploy executed.
 - All edits touched only `docs/`, `.audit/`, and lane-coordination
   files — never `reporium_audit/` or `tests/`.
+
+---
+
+## +6h update (16:53 PDT)
+
+Scheduled fold-in ran late (intended +6h ≈ 10:30 PDT, actual run ≈ 16:53
+PDT). No +2h note had been appended; this is the first lane refresh
+since the 04:51 PDT initial draft.
+
+**Verification re-run on origin:**
+
+| Surface | State at +6h |
+|---|---|
+| `origin/main` HEAD | `80d5352 audit: nightly report 2026-04-25` (unchanged) |
+| PR #12 head | `824cab6` — CLEAN, MERGEABLE, OPEN |
+| PR #11 head | `ebca5cf` — CLEAN, MERGEABLE, OPEN |
+| `claude/feature/KAN-AUDIT-audit-hardening-lane` HEAD | `3a5c53c` (unchanged) |
+| Latest nightly summary on `main` | `✓ 14/16 \| ✗ 1 \| ⚠ 1` (unchanged) |
+| Live FAIL on `main` | `contract: no private/fork repos exposed` (200/200) — still in-flight, owned by reporium-api#440 class |
+| Live WARN on `main` | `perditioinc/repo-intelligence workflows: No runs` |
+
+**Sibling-lane merge scan (since 2026-04-25 00:00):**
+
+`gh pr list --state all --search "merged:>=2026-04-25"` returned `[]`
+for all four sibling repos:
+
+- `reporium-api`: no merges
+- `reporium-ingestion`: no merges
+- `reporium`: no merges
+- `reporium-roadmap`: no merges
+
+Tracked PRs still open and CLEAN: `reporium-api#436` (Cloud Run tag
+cleanup), `#441` (NullPool /health), `#440` (data-quality X-Admin-Key).
+Therefore `docs/OPERATOR_GUIDE.md` §4 references to "tracking PR: #436"
+and the §4 dispatch table row "(PR #436)" are **still accurate** — no
+rebase, no patch needed on PR #11's branch. PR #12 has not picked up
+any new dangling reference.
+
+**Rebase check:** PR #11 still reports `mergeStateStatus: CLEAN` against
+`origin/main`. The base has not advanced since the lane's strip commit,
+so the README append-conflict that was anticipated for "after #12
+merges" has not yet materialized. No force-push performed.
+
+**Residual blind spots from initial draft (unchanged):**
+
+1. The orphan commit `2eebcc1` (`drift.py`/`secrets.py` + 740 lines)
+   still sits locally, unpushed. Recommended as a follow-on PR after
+   #12 merges; not added to this lane's scope.
+2. The `reporter.py` area-banner / Attention upgrade still sits in
+   `stash@{0}` locally. Same recommendation: separate follow-on PR.
+3. PR-queue / supersession hygiene (cross-PR file conflicts e.g.
+   `#441` vs `#435` NullPool, `#436` vs `#438` deploy.yml) remains
+   out of audit-repo scope — that is dispatch-process work.
+
+**Action taken at +6h:** none beyond this note. No commits to PR #11
+or PR #12 branches were warranted. State is stable and merge-ready.
+
+**Stop conditions still honored:**
+
+- No merge or deploy executed.
+- No edits outside `reporium-audit`.
+- All edits touched only `.audit/2026-04-25/audit-hardening-lane-jira.md`
+  on `claude/feature/KAN-AUDIT-audit-hardening-lane` — `reporium_audit/`,
+  `tests/`, `docs/OPERATOR_GUIDE.md`, and PR #12's branch were not
+  modified.
