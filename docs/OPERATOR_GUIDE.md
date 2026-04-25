@@ -26,15 +26,21 @@ land by 09:00 UTC, the audit did not run.
 `AUDIT_REPORT.md` is written by `reporium_audit/reporter.py` and has a
 deliberate top-down layout:
 
-1. **Summary line** — `✓ N/M checks passed | ✗ X failures | …`
-2. **Area status banner** — one-glance roll-up:
-   `API ✓ | Contract ✓ | Drift ✗ | Graph ✓ | Cloud Run ✓ | DB ✓ | Security ✓ | Schedule ✓ | CI ✓`
-3. **Attention** section — every `FAIL` grouped by area. Start here.
-4. Failures / Warnings / Skipped / Full Results tables.
+1. **Summary line** — `✓ N/M checks passed | ✗ X failures | ⚠ Y warnings`
+2. **Failures** section — every `FAIL` as a bullet. Start here.
+3. **Warnings** section — every `WARN` as a bullet.
+4. **Full Results** table — every check, including any `SKIP` rows that
+   never reach Failures or Warnings.
 
-A check shows up under exactly one area; the mapping is prefix-based in
-`reporter.py::AREA_RULES`. `SKIP` is not a failure — it means the check
-could not run because a secret (`DATABASE_URL`, etc.) is not set.
+`SKIP` is not a failure — it means the check could not run because a
+secret (`DATABASE_URL`, `GH_TOKEN`, etc.) is not set on the runner.
+A `SKIP` row only appears in the Full Results table; treat repeated
+SKIPs on the same check as a coverage gap to fix, not a red signal.
+
+Section grouping by *area* (Schedule / Security / Graph / …) is a
+planned reporter upgrade that does not ship in the current
+`reporter.py`; this guide groups escalation rules by area regardless,
+because the *check name* prefix already tells you the area.
 
 ## 3. Run it locally
 
@@ -65,16 +71,6 @@ defaults. Specific checks override below.
 - `FAIL` on required-field nulls → P1 data quality.
 - `WARN` on enriched-field nulls → backlog item.
 
-### Drift — `drift: api vs db repo count`
-- `FAIL` (>5% delta, configurable via `AUDIT_DRIFT_FAIL_PCT`) → **P1**.
-  Silent ingestion loss; API + DB + `/library/full` disagreeing is the
-  class of bug that a single-surface check cannot catch.
-- `WARN` (1–5% delta) → observe for two nights; nightly jobs stagger
-  around midnight UTC and a brief delta is expected.
-- `SKIP` for >2 consecutive nights → fix the check itself; drift is our
-  only cross-source consistency signal and it is not allowed to be
-  silent.
-
 ### Graph — `knowledge graph …`
 - `FAIL` on build freshness (>25h) → page. Nightly graph build stalled.
   Upstream: `perditioinc/reporium-ingestion`.
@@ -94,13 +90,11 @@ defaults. Specific checks override below.
 - `FAIL` on freshness → check the nightly sync workflow in
   `perditioinc/reporium-db` and the Cloud SQL password rotation state.
   Not in this repo's control.
-- `FAIL` on repo count → cross-check with Drift.
+- `FAIL` on repo count → cross-check the live `/repos` endpoint count
+  against `reporium-db/index.json` count manually; a >5% delta is
+  silent ingestion loss.
 
 ### Security — `leaks: …`
-- `FAIL` on any secret-pattern match (`github-token`, `google-api-key`,
-  `aws-access-key`, `slack-token`, `private-key-pem`) → **P0**.
-  Rotate the credential first, purge from git history second. Do not
-  just delete the README line.
 - `FAIL` on forbidden email → triage: if it's a new personal address,
   purge + rewrite history (see 2026-04-16 playbook). If a legitimate
   team address on a new domain, add it to `AUDIT_ALLOWED_EMAIL_DOMAINS`.
@@ -109,9 +103,12 @@ defaults. Specific checks override below.
 
 ### Schedule — `<repo> schedule: <workflow>`
 - `FAIL` → the scheduled cron is red. This is distinct from the CI
-  area: `CI` reads the *latest* run (which may be a passing manual
-  dispatch); `Schedule` pins on `event=schedule`. Trust Schedule over
-  CI when they disagree. Repair the schedule in its home repo.
+  area: `CI` reads the *latest* run for the repo (which may be a
+  passing manual dispatch); `Schedule` filters by the workflow's
+  exact name (e.g. `Nightly Graph Build`, `Data Quality Check`) so
+  it surfaces only that specific job's most recent run. Trust
+  Schedule over CI when they disagree. Repair the schedule in its
+  home repo.
 
 ### CI — `<repo> CI`
 - `FAIL` → open the run log in the named repo. Often already known to
@@ -124,19 +121,18 @@ defaults. Specific checks override below.
 Watch for these across consecutive nights; any one is enough to merit a
 closer look:
 
-1. **`Drift` flips PASS → WARN → FAIL** across 2+ nights. Ingestion is
-   silently dropping rows.
-2. **`knowledge graph edge count regression` FAIL** with DEPENDS_ON at
+1. **`knowledge graph edge count regression` FAIL** with DEPENDS_ON at
    or near zero. Matches the 2026-04-14 KG regression signature.
-3. **`contract: no private/fork repos exposed` FAIL.** A private repo
+2. **`contract: no private/fork repos exposed` FAIL.** A private repo
    leaked into the public index — security-grade.
-4. **Any `leaks: … README secrets` FAIL.** Live credential exposure.
-5. **`Schedule ✗` while `CI ✓`** for the same repo. The cron is red but
-   a manual dispatch is hiding it — exactly the Data Quality Check
-   failure pattern from 2026-04-23.
-6. **`SKIP` count grows week-over-week.** Secrets are rotting; the
+3. **Any `leaks: … README` FAIL on a forbidden email.** Live PII
+   exposure of the same class as the 2026-04-16 regression.
+4. **`<repo> schedule: <workflow> FAIL` while `<repo> CI PASS`** for
+   the same repo. The cron is red but a manual dispatch is hiding it
+   — exactly the Data Quality Check failure pattern from 2026-04-23.
+5. **`SKIP` count grows week-over-week.** Secrets are rotting; the
    audit is losing coverage quietly.
-7. **Nightly commit missing entirely.** The audit itself stopped
+6. **Nightly commit missing entirely.** The audit itself stopped
    running — look at the workflow.
 
 ## 6. What this audit does NOT cover (dependencies)
@@ -163,10 +159,13 @@ current dated folder to capture the week's snapshot.
 - [ ] Seven nightly commits since last Monday? (Missing commit = audit
       stopped.)
 - [ ] Any open `Audit failure …` issue? Each one maps to a row in
-      Attention.
-- [ ] `AUDIT_REPORT.md` on `main`: any area ✗ or ⚠ ? Walk the
-      Attention section top-down.
-- [ ] `Drift` area: PASS every night, or is a delta creeping up?
+      the **Failures** or **Warnings** section of the latest
+      `AUDIT_REPORT.md`.
+- [ ] `AUDIT_REPORT.md` on `main`: any `✗` row in Failures or `⚠` row
+      in Warnings? Walk them top-down using §4 Escalation.
+- [ ] Compare repo counts in `reporium-api /repos` vs
+      `reporium-db repo count` — a silent >5% delta means ingestion is
+      dropping rows even when each surface is individually green.
 - [ ] `SKIP` count this week vs last week: growing = rotting secrets.
 - [ ] New repos in the suite? Add them to `REPOS` in
       `workflows.py` and `DEFAULT_REPOS` in `leaks.py`.

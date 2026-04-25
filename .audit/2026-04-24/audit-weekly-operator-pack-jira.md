@@ -5,21 +5,18 @@
 **Branch:** `claude/feature/KAN-AUDIT-audit-weekly-operator-pack`
 **Target:** `main`
 **Repo:** `reporium-audit`
-**Depends on:** `claude/feature/KAN-AUDIT-reporium-audit-hardening`,
-`claude/feature/KAN-AUDIT-audit-autopilot-followon` (same-night lanes;
-this lane does not modify their code, only documents the shape they
-land in)
+**Depends on:** `claude/feature/KAN-AUDIT-reporium-audit-hardening`
+(this lane does not modify hardening-lane code, only documents the
+shape it lands in)
 
 ## Summary
 
-After tonight's hardening + follow-on lanes the audit covers scheduled
-workflows, knowledge-graph edges, Cloud Run candidate tags, README
-secrets, and cross-source suite drift, with a reporter that groups
-results by area and surfaces an `## Attention` section. None of that is
-packaged for a weekly-cadence operator. A new person going on-call
-Monday has only a 31-line README and a flat nightly report — no guide
-for which `FAIL` means "page", which means "ticket", which means
-"re-run tomorrow".
+After tonight's hardening lane the audit covers scheduled workflows,
+knowledge-graph edges (with build-freshness gating), Cloud Run
+candidate tags, and public-README emails. None of that is packaged for
+a weekly-cadence operator. A new person going on-call Monday has only
+a short README and a flat nightly report — no guide for which `FAIL`
+means "page", which means "ticket", which means "re-run tomorrow".
 
 This lane adds a concise, check-tied operator pack: an in-repo
 [`docs/OPERATOR_GUIDE.md`](../../docs/OPERATOR_GUIDE.md) and a dated
@@ -53,15 +50,16 @@ Organized by what an operator does, not by how the code is structured:
 
 - **§1 Where to look** — `AUDIT_REPORT.md`, nightly commit, failure
   issue, workflow page.
-- **§2 How to read the report** — area banner, Attention section,
-  SKIP semantics; points at `reporter.py::AREA_RULES` for the
-  area-assignment logic.
+- **§2 How to read the report** — Summary line, Failures, Warnings,
+  Full Results table, SKIP semantics. Notes that area-grouped output
+  is a planned reporter upgrade; this guide groups escalation rules
+  by area conceptually, using the check-name prefix as the cue.
 - **§3 Run it locally** — env vars + command.
 - **§4 Escalation by area** — per-area rules with specific check-name
   overrides (e.g. `FAIL` on `DEPENDS_ON > 0` is a P0, `FAIL` on Cloud
   Run tag is a ticket, not a page). Every rule maps to a check that
   ships today.
-- **§5 Top signals of suite drift** — seven signals in priority order,
+- **§5 Top signals of suite drift** — six signals in priority order,
   each anchored to a real incident or a specific check name.
 - **§6 What this audit does NOT cover** — table of blind spots, each
   with a named owner outside `reporium-audit`.
@@ -79,11 +77,12 @@ existing content removed.
 Dated weekly memo carrying:
 
 - What to run / monitor (with expected cadence).
-- Expected nightly outputs (commit shape, area banner, SKIP semantics).
+- Expected nightly outputs (commit shape, summary-line shape,
+  SKIP semantics).
 - Escalation table (quick reference; full version in the in-repo guide
-  to avoid drift between the two docs).
-- Top signals of suite drift (shared list with guide; this copy carries
-  the "as of 2026-04-24" snapshot).
+  to avoid divergence between the two docs).
+- Top signals of suite drift (shared list with guide; this copy
+  carries the "as of 2026-04-24" snapshot).
 - Monitoring blind spots with owners.
 - **Week in review template** — fill-in tables for nightly trail,
   SKIP delta, escalations fired, suite changes.
@@ -102,21 +101,18 @@ Docs-only PR. No test changes.
 Manual verification performed:
 
 - All check names referenced in escalation rules and top-signals
-  sections exist in `reporium_audit/checks/` today:
+  sections exist in `reporium_audit/checks/` after the hardening
+  lane lands:
   - `reporium-api /health`, `/repos`, `/search` (`api.py`)
   - `contract: no private/fork repos exposed` and nulls
     (`contract.py`)
-  - `drift: api vs db repo count` (`drift.py`)
   - `knowledge graph edge counts`, `knowledge graph build freshness`,
     `knowledge graph DEPENDS_ON > 0`, `knowledge graph edge count
     regression` (`knowledge_graph.py`)
   - `cloud run candidate tags` (`cloud_run_tags.py`)
-  - `leaks: <repo> README` and `leaks: <repo> README secrets`
-    (`leaks.py`)
+  - `leaks: <repo> README` (forbidden-email scan in `leaks.py`)
   - `<repo> CI` (`workflows.py`)
   - `<repo> schedule: <workflow>` (`workflows.py::check_scheduled_workflows`)
-- Area banner ordering matches `reporter.py::AREA_ORDER`.
-- SKIP status documented matches `reporter.py::STATUS_ICON`.
 
 ## Out of scope / stop conditions
 

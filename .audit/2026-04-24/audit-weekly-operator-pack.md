@@ -22,7 +22,7 @@ nightly commit trail, and file issues for the escalations that fired.
 |---|---|---|
 | Every morning | Skim latest `AUDIT_REPORT.md` on `main` | repo root |
 | Daily ~09:00 UTC | Confirm a `audit: nightly report YYYY-MM-DD` commit landed | `git log main --since=yesterday` |
-| On failure issue fires | Open Attention section first, not Full Results | nightly `AUDIT_REPORT.md` |
+| On failure issue fires | Open the **Failures** section first, then **Warnings** | nightly `AUDIT_REPORT.md` |
 | Weekly (Monday, ~10 min) | Walk §"Week in review" template below | this file |
 | Ad-hoc | `python -m reporium_audit run` locally | anywhere with env vars |
 
@@ -37,13 +37,11 @@ export DATABASE_URL=...   # enables graph checks (optional)
 ## Expected outputs
 
 - Exactly one nightly commit per day at ~08:05 UTC by `perditio-bot`.
-- `AUDIT_REPORT.md` header summary reads `✓ N/M checks passed` with
-  no `✗` in the area banner.
-- Area banner, stable ordering:
-  `API | Contract | Drift | Graph | Cloud Run | DB | Security |
-  Schedule | CI` (some may be absent if no checks mapped to them).
-- No `## Attention` section — `Attention` only renders when there is a
-  FAIL.
+- `AUDIT_REPORT.md` header summary reads
+  `✓ N/M checks passed | ⚠ Y warnings` (or with `✗ X failures` only
+  on a red night).
+- No `## Failures` section on a green night — that section only
+  renders when at least one check is FAIL.
 - `SKIP` rows only on checks whose secret is not provisioned for the
   nightly runner (currently: `knowledge graph edge counts` if
   `DATABASE_URL` is not wired to CI; `cloud run candidate tags` if
@@ -60,17 +58,16 @@ reference:
 
 | Area | FAIL response | WARN response |
 |---|---|---|
-| **Security** (`leaks: *`) on secret pattern | **P0, rotate credential, purge history** | n/a |
+| **Security** `leaks: <repo> README` (forbidden email) | **P0, purge + rewrite history** (2026-04-16 playbook) | "README.md not found" → verify repo still belongs in tracked list |
 | **Contract** `no private/fork repos exposed` | **P0**, pull repo from index, investigate bypass | — |
 | **Graph** `DEPENDS_ON > 0` | **P0**, core edges missing (see KAN-119 postmortem) | — |
 | **API** `/health`, `/repos`, `/search` | **Page** — user-visible | Re-run audit |
 | **Graph** build freshness (>25h) | **Page** — `reporium-ingestion` nightly stalled | — |
-| **Drift** `api vs db repo count` | **P1** silent ingestion loss | Observe 2 nights |
 | **Graph** edge count regression (>50%) | P1 | P1 if >20% (WARN-level) |
 | **Contract** required-field nulls | P1 data quality | Enriched-null → backlog |
 | **Schedule** `<repo>: <workflow>` red | Repair cron in home repo (NOT here) | — |
 | **CI** latest run red | Open run in home repo | `No runs` → check if repo archived |
-| **DB** index.json freshness | Upstream: `reporium-db` nightly sync | Cross-check Drift |
+| **DB** index.json freshness | Upstream: `reporium-db` nightly sync | Cross-check `/repos` count vs `index.json` count manually |
 | **Cloud Run** candidate tags | File ticket on `reporium-api` deploy.yml (PR #436) | — |
 
 Disagreement rule: when `Schedule ✗` and `CI ✓` for the same repo,
@@ -82,25 +79,23 @@ dispatch. This was the Data Quality Check failure pattern on
 
 In priority order. Any one is enough to dig further.
 
-1. **`Drift` area flips PASS → WARN → FAIL across 2+ nights.** Three
-   independently populated surfaces (`api:/repos`,
-   `api:/library/full`, `db:index.json`) are diverging. Silent
-   ingestion loss is the canonical cause.
-2. **`knowledge graph edge count regression` FAIL or
+1. **`knowledge graph edge count regression` FAIL or
    `DEPENDS_ON=0`.** Matches the 2026-04-14 KG regression signature.
    DEPENDS_ON at zero means the core join is gone, not just slow.
-3. **`contract: no private/fork repos exposed` FAIL.** A private or
+2. **`contract: no private/fork repos exposed` FAIL.** A private or
    fork repo reached the public `/library/full`. Same severity class
    as the 2026-04-16 email-leak incident.
-4. **Any `leaks: … README secrets` FAIL.** A credential matched a
-   high-confidence pattern. This is already-exposed — rotate first,
-   clean git history second.
-5. **`Schedule ✗` with `CI ✓` on the same repo.** The cron is red;
-   a manual dispatch is masking it in the older "latest run" view.
-6. **Growing `SKIP` count week-over-week.** Secrets expiring or
+3. **Any `leaks: <repo> README` FAIL on a forbidden email.** Live PII
+   exposure of the same class as the 2026-04-16 regression. Purge +
+   history rewrite per playbook.
+4. **`<repo> schedule: <workflow> ✗` while `<repo> CI ✓` on the same
+   repo.** The cron is red; a manual dispatch is masking it in the
+   older "latest run" view. This was the Data Quality Check failure
+   pattern on 2026-04-23.
+5. **Growing `SKIP` count week-over-week.** Secrets expiring or
    rotating without the audit runner being updated. Coverage is
    rotting quietly.
-7. **Missing nightly commit.** The audit itself stopped.
+6. **Missing nightly commit.** The audit itself stopped.
 
 ## Monitoring blind spots (open)
 
@@ -134,9 +129,9 @@ Fill this in Monday morning before the standup.
 
 ### Nightly commit trail
 
-| Night | Commit landed | Area banner | Issue fired |
+| Night | Commit landed | Summary line | Issue fired |
 |---|---|---|---|
-| Mon | y / n | `API ✓ …` | # |
+| Mon | y / n | `✓ N/M passed \| ✗ X failures` | # |
 | Tue | | | |
 | Wed | | | |
 | Thu | | | |
@@ -168,6 +163,5 @@ A positive delta is the flag — it means audit coverage regressed.
 
 - In-repo: [`docs/OPERATOR_GUIDE.md`](../../docs/OPERATOR_GUIDE.md)
 - Hardening lane: `.audit/2026-04-24/reporium-audit-hardening-report.md`
-- Follow-on lane: `.audit/2026-04-24/audit-autopilot-followon-jira.md`
 - Workflow: `.github/workflows/audit.yml`
 - Reporter layout: `reporium_audit/reporter.py`
