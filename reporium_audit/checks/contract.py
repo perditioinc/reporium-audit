@@ -33,12 +33,15 @@ async def check_contract(api_url: str) -> list[dict]:
             data = r.json()
             repos = data.get("repos", [])
 
-            # Check: no private repos
-            private = [repo["name"] for repo in repos if repo.get("isFork") or repo.get("isPrivate")]
+            # Check: no private repos.
+            # Forks are intentionally part of the curated catalog (Reporium's
+            # product surface is forks of upstream open-source repos), so they
+            # are not a privacy violation. Only ``isPrivate=true`` is.
+            private = [repo["name"] for repo in repos if repo.get("isPrivate")]
             results.append({
-                "check": "contract: no private/fork repos exposed",
+                "check": "contract: no private repos exposed",
                 "status": "PASS" if len(private) == 0 else "FAIL",
-                "detail": f"{len(repos)} repos, {len(private)} private/fork" if private else f"{len(repos)} public owned repos",
+                "detail": f"{len(repos)} repos, {len(private)} private" if private else f"{len(repos)} public repos",
             })
 
             # Check: no null required fields
