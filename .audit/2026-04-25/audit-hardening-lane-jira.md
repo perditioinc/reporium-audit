@@ -272,3 +272,50 @@ never appended a block).
   the canonical handoff.
 
 🤖 Audit Hardening Lane — closing pass 2026-04-25 16:53 PDT
+
+---
+
+## Fresh autonomous re-run (2026-04-25 17:03 PDT)
+
+A separate autonomous Audit Lane invocation fired ~10 minutes after
+the prior lane's closing pass. Scope: validate state, refresh PR
+comments with current evidence, schedule +3h/+8h follow-ups, write
+the 2026-04-26 execution note. No code changes.
+
+**Re-verified surfaces:**
+
+| Surface | State at 17:03 PDT |
+|---|---|
+| `origin/main` HEAD | `80d5352 audit: nightly report 2026-04-25` (unchanged) |
+| PR #12 head | `824cab69` — CLEAN, MERGEABLE; `pytest -q` → **28 passed in 2.23s** (fresh, not the 04:30 PDT number) |
+| PR #11 head | `ebca5cf` — CLEAN, MERGEABLE |
+| Coordination branch HEAD | `530bc324` (prior +9h closing-sweep commit) |
+| Sibling repo merges 2026-04-25 | none (rechecked all four) |
+| Cross-PR refs in `OPERATOR_GUIDE.md` | still accurate against today's open queue |
+
+**PR comments posted at 17:03 PDT:**
+
+- [#12 fresh re-validation comment](https://github.com/perditioinc/reporium-audit/pull/12) — restates 28-pass result on `824cab69`, residual blind spots
+- [#11 fresh re-validation comment](https://github.com/perditioinc/reporium-audit/pull/11) — confirms cross-PR refs still accurate, restates merge order
+
+**Scheduled follow-ups created:**
+
+- `audit-lane-followup-plus3h-2026-04-25-pm` → fires 2026-04-25 20:03 PDT
+- `audit-lane-followup-plus8h-2026-04-26-am` → fires 2026-04-26 01:03 PDT
+
+Both are one-time tasks with self-contained prompts that re-read this
+file and the morning note before any action. They will append to this
+file (not replace) and post PR comments only on material drift.
+
+**Final 2026-04-26 execution note** at
+[`.audit/2026-04-26/audit-execution-note.md`](../2026-04-26/audit-execution-note.md)
+— canonical handoff for the morning operator.
+
+**Stop conditions honored this run:**
+
+- No merge or deploy.
+- No edits outside `reporium-audit` or to `reporium_audit/`/`tests/`.
+- All edits touched only `.audit/2026-04-25/` and `.audit/2026-04-26/`
+  on `claude/feature/KAN-AUDIT-audit-hardening-lane`.
+
+🤖 Audit Lane — fresh autonomous run 2026-04-25 17:03 PDT
