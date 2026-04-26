@@ -21,8 +21,6 @@ from __future__ import annotations
 
 from datetime import datetime, timedelta, timezone
 
-import psycopg2
-
 
 STALE_RUN_THRESHOLD = timedelta(hours=25)
 
@@ -43,6 +41,19 @@ async def check_knowledge_graph(db_url: str) -> list[dict]:
             "check": "knowledge graph edge counts",
             "status": "SKIP",
             "detail": "DATABASE_URL not set -- audit runner has no DB credentials",
+        })
+        return results
+
+    # psycopg2 is imported lazily so the SKIP path above doesn't require the
+    # dep. The audit's declared deps are httpx + python-dotenv only; psycopg2
+    # is only needed when DATABASE_URL is set (issue #13).
+    try:
+        import psycopg2
+    except ImportError as e:
+        results.append({
+            "check": "knowledge graph edge counts",
+            "status": "FAIL",
+            "detail": f"psycopg2 not installed: {e}",
         })
         return results
 
