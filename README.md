@@ -68,3 +68,15 @@ Runs at 8am UTC daily (after all other nightly jobs complete). Creates a GitHub 
 
 See [`.audit/2026-04-24/reporium-audit-hardening-report.md`](.audit/2026-04-24/reporium-audit-hardening-report.md)
 for the most recent coverage expansion and residual blind spots.
+
+## For Operators
+
+On-call? Start here:
+
+- [docs/OPERATOR_GUIDE.md](docs/OPERATOR_GUIDE.md) — how to read the
+  report, per-area escalation rules, top signals of suite drift, and
+  what this audit does *not* cover (infra/ops dependencies).
+- [`AUDIT_REPORT.md`](AUDIT_REPORT.md) on `main` is rewritten nightly;
+  a missing daily commit means the audit did not run.
+- Weekly review template:
+  `.audit/YYYY-MM-DD/audit-weekly-operator-pack.md`.
