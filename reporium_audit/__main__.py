@@ -10,6 +10,7 @@ import sys
 from dotenv import load_dotenv
 
 from reporium_audit.checks.api import check_api
+from reporium_audit.checks.cache_consistency import check_cache_consistency
 from reporium_audit.checks.cloud_run_tags import check_cloud_run_tags
 from reporium_audit.checks.contract import check_contract
 from reporium_audit.checks.knowledge_graph import check_knowledge_graph
@@ -41,6 +42,7 @@ async def run_audit() -> str:
     (
         api_results,
         contract_results,
+        cache_results,
         db_results,
         wf_results,
         sched_results,
@@ -50,6 +52,7 @@ async def run_audit() -> str:
     ) = await asyncio.gather(
         check_api(api_url),
         check_contract(api_url),
+        check_cache_consistency(api_url),
         check_reporium_db(gh_token),
         check_workflows(gh_token),
         check_scheduled_workflows(gh_token),
@@ -61,6 +64,7 @@ async def run_audit() -> str:
     results: list[dict] = []
     results.extend(api_results)
     results.extend(contract_results)
+    results.extend(cache_results)
     results.extend(db_results)
     results.extend(wf_results)
     results.extend(sched_results)
