@@ -12,7 +12,7 @@ from dotenv import load_dotenv
 from reporium_audit.checks.api import check_api
 from reporium_audit.checks.cache_consistency import check_cache_consistency
 from reporium_audit.checks.cloud_run_tags import check_cloud_run_tags
-from reporium_audit.checks.contract import check_contract
+from reporium_audit.checks.contract import check_contract, check_static_artifact
 from reporium_audit.checks.knowledge_graph import check_knowledge_graph
 from reporium_audit.checks.leaks import check_leaks
 from reporium_audit.checks.reporium_db import check_reporium_db
@@ -29,6 +29,14 @@ async def run_audit() -> str:
     api_url = os.getenv("REPORIUM_API_URL", "")
     gh_token = os.getenv("GH_TOKEN", "")
     db_url = os.getenv("DATABASE_URL", "")
+    # Static-artifact privacy gate (Lane 4 hotfix). The frontend artifact at
+    # reporium.com/data/library.json can serve stale data even after the API
+    # is fixed — this URL is checked separately. Configurable so preview /
+    # staging deployments can point at their own artifact host.
+    static_artifact_url = os.getenv(
+        "REPORIUM_STATIC_LIBRARY_URL",
+        "https://reporium.com/data/library.json",
+    )
 
     if not api_url:
         logger.error("REPORIUM_API_URL is required")
@@ -42,6 +50,7 @@ async def run_audit() -> str:
     (
         api_results,
         contract_results,
+        static_artifact_results,
         cache_results,
         db_results,
         wf_results,
@@ -52,6 +61,7 @@ async def run_audit() -> str:
     ) = await asyncio.gather(
         check_api(api_url),
         check_contract(api_url),
+        check_static_artifact(static_artifact_url),
         check_cache_consistency(api_url),
         check_reporium_db(gh_token),
         check_workflows(gh_token),
@@ -64,6 +74,7 @@ async def run_audit() -> str:
     results: list[dict] = []
     results.extend(api_results)
     results.extend(contract_results)
+    results.extend(static_artifact_results)
     results.extend(cache_results)
     results.extend(db_results)
     results.extend(wf_results)
