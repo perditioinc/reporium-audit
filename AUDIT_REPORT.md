@@ -1,4 +1,4 @@
-# Reporium Audit Report — 2026-04-29
+# Reporium Audit Report — 2026-04-30
 
 ## Summary
 
@@ -32,13 +32,13 @@
 | reporium-metrics CI | ✓ PASS | Nightly Metrics Collection: success |
 | perditioinc/repo-intelligence workflows | ⚠ WARN | No runs |
 | reporium-api CI | ✓ PASS | Nightly Sync from reporium-db: success |
-| reporium-ingestion CI | ✓ PASS | Nightly Graph Build: success |
+| reporium-ingestion CI | ✓ PASS | Tests: success |
 | reporium-events CI | ✓ PASS | Security Scan: success |
 | reporium-audit CI | ✗ FAIL | Nightly Audit: None |
-| forksync schedule: Nightly Fork Sync | ✓ PASS | success (started 2026-04-29T08:25:35Z) |
-| reporium-db schedule: Nightly Sync | ✓ PASS | success (started 2026-04-29T07:25:05Z) |
-| reporium-ingestion schedule: Nightly Graph Build | ✓ PASS | success (started 2026-04-28T10:27:44Z) |
-| reporium-api schedule: Data Quality Check | ✓ PASS | success (started 2026-04-28T10:52:42Z) |
+| forksync schedule: Nightly Fork Sync | ✓ PASS | success (started 2026-04-30T08:27:56Z) |
+| reporium-db schedule: Nightly Sync | ✓ PASS | success (started 2026-04-30T07:28:43Z) |
+| reporium-ingestion schedule: Nightly Graph Build | ✓ PASS | success (started 2026-04-29T10:21:09Z) |
+| reporium-api schedule: Data Quality Check | ✓ PASS | success (started 2026-04-29T10:45:44Z) |
 | knowledge graph edge counts | ? SKIP | DATABASE_URL not set -- audit runner has no DB credentials |
 | cloud run candidate tags | ✓ PASS | No candidate tags harvested from recent deploy runs |
 | leaks: perditioinc/reporium-api README | ✓ PASS | No forbidden emails |
@@ -49,4 +49,4 @@
 | leaks: perditioinc/reporium-events README | ✓ PASS | No forbidden emails |
 | leaks: perditioinc/reporium-metrics README | ✓ PASS | No forbidden emails |
 
-*Generated at 2026-04-29T09:53:44.192598+00:00*
+*Generated at 2026-04-30T09:54:48.122828+00:00*
