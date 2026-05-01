@@ -1,8 +1,8 @@
-# Reporium Audit Report — 2026-04-30
+# Reporium Audit Report — 2026-05-01
 
 ## Summary
 
-✓ 29/32 checks passed | ✗ 1 failures | ⚠ 1 warnings
+✓ 29/33 checks passed | ✗ 1 failures | ⚠ 2 warnings
 
 ## Failures
 
@@ -11,19 +11,21 @@
 ## Warnings
 
 - **perditioinc/repo-intelligence workflows**: No runs
+- **reporium-api schedule: Data Quality Check**: no recent run with matching workflow name
 
 ## Full Results
 
 | Check | Status | Detail |
 |-------|--------|--------|
-| reporium-api /health | ✓ PASS | {'status': 'ok', 'db': 'ok', 'pool': {'size': 5, 'checked_out': 1, 'overflow': 0}} |
-| reporium-api /repos | ✓ PASS | 1861 repos |
+| reporium-api /health | ✓ PASS | {'status': 'ok', 'db': 'ok', 'pool': {'size': 5, 'checked_out': 2, 'overflow': 0}} |
+| reporium-api /repos | ✓ PASS | 1866 repos |
 | reporium-api /search | ✓ PASS | 20 results |
 | contract: no private repos exposed | ✓ PASS | 200 public repos |
 | contract: no null required fields | ✓ PASS | 0 nulls |
 | contract: no null enriched fields | ✓ PASS | 0 nulls |
-| reporium-db repo count | ✓ PASS | 1858 repos |
-| reporium-db index.json fresh | ✓ PASS | Updated 2.3h ago |
+| cache vs db: repo detail consistency | ✓ PASS | 15/15 sampled repos have /repos/<slug> categories that include the /library/full dbCategory column value |
+| reporium-db repo count | ✓ PASS | 1862 repos |
+| reporium-db index.json fresh | ✓ PASS | Updated 1.9h ago |
 | forksync CI | ✓ PASS | Nightly Fork Sync: success |
 | reporium-db CI | ✓ PASS | Nightly Sync: success |
 | reporium-dataset CI | ✓ PASS | Nightly README Update: success |
@@ -35,10 +37,10 @@
 | reporium-ingestion CI | ✓ PASS | Tests: success |
 | reporium-events CI | ✓ PASS | Security Scan: success |
 | reporium-audit CI | ✗ FAIL | Nightly Audit: None |
-| forksync schedule: Nightly Fork Sync | ✓ PASS | success (started 2026-04-30T08:27:56Z) |
-| reporium-db schedule: Nightly Sync | ✓ PASS | success (started 2026-04-30T07:28:43Z) |
-| reporium-ingestion schedule: Nightly Graph Build | ✓ PASS | success (started 2026-04-29T10:21:09Z) |
-| reporium-api schedule: Data Quality Check | ✓ PASS | success (started 2026-04-29T10:45:44Z) |
+| forksync schedule: Nightly Fork Sync | ✓ PASS | success (started 2026-05-01T08:19:10Z) |
+| reporium-db schedule: Nightly Sync | ✓ PASS | success (started 2026-05-01T07:26:16Z) |
+| reporium-ingestion schedule: Nightly Graph Build | ✓ PASS | success (started 2026-04-30T10:21:06Z) |
+| reporium-api schedule: Data Quality Check | ⚠ WARN | no recent run with matching workflow name |
 | knowledge graph edge counts | ? SKIP | DATABASE_URL not set -- audit runner has no DB credentials |
 | cloud run candidate tags | ✓ PASS | No candidate tags harvested from recent deploy runs |
 | leaks: perditioinc/reporium-api README | ✓ PASS | No forbidden emails |
@@ -49,4 +51,4 @@
 | leaks: perditioinc/reporium-events README | ✓ PASS | No forbidden emails |
 | leaks: perditioinc/reporium-metrics README | ✓ PASS | No forbidden emails |
 
-*Generated at 2026-04-30T09:54:48.122828+00:00*
+*Generated at 2026-05-01T09:23:19.451645+00:00*
