@@ -1,4 +1,4 @@
-# Reporium Audit Report — 2026-05-01
+# Reporium Audit Report — 2026-05-02
 
 ## Summary
 
@@ -17,15 +17,15 @@
 
 | Check | Status | Detail |
 |-------|--------|--------|
-| reporium-api /health | ✓ PASS | {'status': 'ok', 'db': 'ok', 'pool': {'size': 5, 'checked_out': 2, 'overflow': 0}} |
-| reporium-api /repos | ✓ PASS | 1866 repos |
+| reporium-api /health | ✓ PASS | {'status': 'ok', 'db': 'ok', 'pool': {'size': 5, 'checked_out': 2, 'overflow': -1}} |
+| reporium-api /repos | ✓ PASS | 1867 repos |
 | reporium-api /search | ✓ PASS | 20 results |
 | contract: no private repos exposed | ✓ PASS | 200 public repos |
 | contract: no null required fields | ✓ PASS | 0 nulls |
 | contract: no null enriched fields | ✓ PASS | 0 nulls |
 | cache vs db: repo detail consistency | ✓ PASS | 15/15 sampled repos have /repos/<slug> categories that include the /library/full dbCategory column value |
-| reporium-db repo count | ✓ PASS | 1862 repos |
-| reporium-db index.json fresh | ✓ PASS | Updated 1.9h ago |
+| reporium-db repo count | ✓ PASS | 1863 repos |
+| reporium-db index.json fresh | ✓ PASS | Updated 1.8h ago |
 | forksync CI | ✓ PASS | Nightly Fork Sync: success |
 | reporium-db CI | ✓ PASS | Nightly Sync: success |
 | reporium-dataset CI | ✓ PASS | Nightly README Update: success |
@@ -33,13 +33,13 @@
 | reporium-roadmap CI | ✓ PASS | Nightly Roadmap Update: success |
 | reporium-metrics CI | ✓ PASS | Nightly Metrics Collection: success |
 | perditioinc/repo-intelligence workflows | ⚠ WARN | No runs |
-| reporium-api CI | ✓ PASS | Nightly Sync from reporium-db: success |
-| reporium-ingestion CI | ✓ PASS | Tests: success |
+| reporium-api CI | ✓ PASS | Keep Cloud Run warm: success |
+| reporium-ingestion CI | ✓ PASS | Nightly Graph Build: success |
 | reporium-events CI | ✓ PASS | Security Scan: success |
 | reporium-audit CI | ✗ FAIL | Nightly Audit: None |
-| forksync schedule: Nightly Fork Sync | ✓ PASS | success (started 2026-05-01T08:19:10Z) |
-| reporium-db schedule: Nightly Sync | ✓ PASS | success (started 2026-05-01T07:26:16Z) |
-| reporium-ingestion schedule: Nightly Graph Build | ✓ PASS | success (started 2026-04-30T10:21:06Z) |
+| forksync schedule: Nightly Fork Sync | ✓ PASS | success (started 2026-05-02T07:50:37Z) |
+| reporium-db schedule: Nightly Sync | ✓ PASS | success (started 2026-05-02T07:01:49Z) |
+| reporium-ingestion schedule: Nightly Graph Build | ✓ PASS | success (started 2026-05-01T09:59:39Z) |
 | reporium-api schedule: Data Quality Check | ⚠ WARN | no recent run with matching workflow name |
 | knowledge graph edge counts | ? SKIP | DATABASE_URL not set -- audit runner has no DB credentials |
 | cloud run candidate tags | ✓ PASS | No candidate tags harvested from recent deploy runs |
@@ -51,4 +51,4 @@
 | leaks: perditioinc/reporium-events README | ✓ PASS | No forbidden emails |
 | leaks: perditioinc/reporium-metrics README | ✓ PASS | No forbidden emails |
 
-*Generated at 2026-05-01T09:23:19.451645+00:00*
+*Generated at 2026-05-02T08:55:11.546228+00:00*
