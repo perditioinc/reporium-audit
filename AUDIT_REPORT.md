@@ -1,4 +1,4 @@
-# Reporium Audit Report — 2026-05-11
+# Reporium Audit Report — 2026-05-12
 
 ## Summary
 
@@ -6,13 +6,13 @@
 
 ## Failures
 
-- **reporium-db index.json fresh**: Updated 27.3h ago
+- **reporium-db index.json fresh**: Updated 50.8h ago
 - **forksync CI**: Nightly Fork Sync: failure
 - **reporium-db CI**: Nightly Sync: failure
 - **reporium-ingestion CI**: Nightly Enrichment Quality Probe: failure
 - **reporium-audit CI**: Nightly Audit: None
-- **forksync schedule: Nightly Fork Sync**: failure (started 2026-05-11T09:49:46Z)
-- **reporium-db schedule: Nightly Sync**: failure (started 2026-05-11T08:24:50Z)
+- **forksync schedule: Nightly Fork Sync**: failure (started 2026-05-12T08:46:39Z)
+- **reporium-db schedule: Nightly Sync**: failure (started 2026-05-12T07:43:47Z)
 
 ## Warnings
 
@@ -22,19 +22,19 @@
 
 | Check | Status | Detail |
 |-------|--------|--------|
-| reporium-api /health | ✓ PASS | {'status': 'ok', 'db': 'ok', 'pool': {'size': 5, 'checked_out': 2, 'overflow': 0}} |
-| reporium-api /repos | ✓ PASS | 1889 repos |
+| reporium-api /health | ✓ PASS | {'status': 'ok', 'db': 'ok', 'pool': {'size': 5, 'checked_out': 3, 'overflow': 0}} |
+| reporium-api /repos | ✓ PASS | 1892 repos |
 | reporium-api /search | ✓ PASS | 20 results |
 | contract: privacy field present on every repo | ✓ PASS | all 200 repos carry isPrivate / is_private |
 | contract: no private repos exposed | ✓ PASS | 200 repos checked, none private |
 | contract: no null required fields | ✓ PASS | 0 nulls |
 | contract: no null enriched fields | ✓ PASS | 0 nulls |
-| static artifact: reachable | ✓ PASS | 1889 repos at https://reporium.com/data/library.json |
-| static artifact: privacy field present on every repo | ✓ PASS | all 1889 repos carry isPrivate / is_private |
-| static artifact: no private repos exposed | ✓ PASS | 1889 repos checked, none private |
+| static artifact: reachable | ✓ PASS | 1892 repos at https://reporium.com/data/library.json |
+| static artifact: privacy field present on every repo | ✓ PASS | all 1892 repos carry isPrivate / is_private |
+| static artifact: no private repos exposed | ✓ PASS | 1892 repos checked, none private |
 | cache vs db: repo detail consistency | ✓ PASS | 15/15 sampled repos have /repos/<slug> categories that include the /library/full dbCategory column value |
 | reporium-db repo count | ✓ PASS | 1885 repos |
-| reporium-db index.json fresh | ✗ FAIL | Updated 27.3h ago |
+| reporium-db index.json fresh | ✗ FAIL | Updated 50.8h ago |
 | forksync CI | ✗ FAIL | Nightly Fork Sync: failure |
 | reporium-db CI | ✗ FAIL | Nightly Sync: failure |
 | reporium-dataset CI | ✓ PASS | Nightly README Update: success |
@@ -46,10 +46,10 @@
 | reporium-ingestion CI | ✗ FAIL | Nightly Enrichment Quality Probe: failure |
 | reporium-events CI | ✓ PASS | Security Scan: success |
 | reporium-audit CI | ✗ FAIL | Nightly Audit: None |
-| forksync schedule: Nightly Fork Sync | ✗ FAIL | failure (started 2026-05-11T09:49:46Z) |
-| reporium-db schedule: Nightly Sync | ✗ FAIL | failure (started 2026-05-11T08:24:50Z) |
-| reporium-ingestion schedule: Nightly Graph Build | ✓ PASS | success (started 2026-05-10T09:50:52Z) |
-| reporium-api schedule: Data Quality Check | ✓ PASS | success (started 2026-05-10T10:04:16Z) |
+| forksync schedule: Nightly Fork Sync | ✗ FAIL | failure (started 2026-05-12T08:46:39Z) |
+| reporium-db schedule: Nightly Sync | ✗ FAIL | failure (started 2026-05-12T07:43:47Z) |
+| reporium-ingestion schedule: Nightly Graph Build | ✓ PASS | success (started 2026-05-11T11:39:30Z) |
+| reporium-api schedule: Data Quality Check | ✓ PASS | success (started 2026-05-11T11:55:39Z) |
 | knowledge graph edge counts | ? SKIP | DATABASE_URL not set -- audit runner has no DB credentials |
 | cloud run candidate tags | ✓ PASS | No candidate tags harvested from recent deploy runs |
 | leaks: perditioinc/reporium-api README | ✓ PASS | No forbidden emails |
@@ -60,4 +60,4 @@
 | leaks: perditioinc/reporium-events README | ✓ PASS | No forbidden emails |
 | leaks: perditioinc/reporium-metrics README | ✓ PASS | No forbidden emails |
 
-*Generated at 2026-05-11T10:50:11.965394+00:00*
+*Generated at 2026-05-12T10:19:41.446910+00:00*
