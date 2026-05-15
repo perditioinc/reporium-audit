@@ -1,4 +1,4 @@
-# Reporium Audit Report — 2026-05-14
+# Reporium Audit Report — 2026-05-15
 
 ## Summary
 
@@ -6,13 +6,13 @@
 
 ## Failures
 
-- **reporium-db index.json fresh**: Updated 26.0h ago
+- **reporium-db index.json fresh**: Updated 50.2h ago
 - **forksync CI**: Nightly Fork Sync: failure
 - **reporium-db CI**: Nightly Sync: failure
 - **reporium-ingestion CI**: Nightly Enrichment Quality Probe: failure
 - **reporium-audit CI**: Nightly Audit: None
-- **forksync schedule: Nightly Fork Sync**: failure (started 2026-05-14T08:43:38Z)
-- **reporium-db schedule: Nightly Sync**: failure (started 2026-05-14T07:44:05Z)
+- **forksync schedule: Nightly Fork Sync**: failure (started 2026-05-15T08:54:15Z)
+- **reporium-db schedule: Nightly Sync**: failure (started 2026-05-15T07:53:44Z)
 
 ## Warnings
 
@@ -34,7 +34,7 @@
 | static artifact: no private repos exposed | ✓ PASS | 1898 repos checked, none private |
 | cache vs db: repo detail consistency | ✓ PASS | 15/15 sampled repos have /repos/<slug> categories that include the /library/full dbCategory column value |
 | reporium-db repo count | ✓ PASS | 1894 repos |
-| reporium-db index.json fresh | ✗ FAIL | Updated 26.0h ago |
+| reporium-db index.json fresh | ✗ FAIL | Updated 50.2h ago |
 | forksync CI | ✗ FAIL | Nightly Fork Sync: failure |
 | reporium-db CI | ✗ FAIL | Nightly Sync: failure |
 | reporium-dataset CI | ✓ PASS | Nightly README Update: success |
@@ -46,10 +46,10 @@
 | reporium-ingestion CI | ✗ FAIL | Nightly Enrichment Quality Probe: failure |
 | reporium-events CI | ✓ PASS | Security Scan: success |
 | reporium-audit CI | ✗ FAIL | Nightly Audit: None |
-| forksync schedule: Nightly Fork Sync | ✗ FAIL | failure (started 2026-05-14T08:43:38Z) |
-| reporium-db schedule: Nightly Sync | ✗ FAIL | failure (started 2026-05-14T07:44:05Z) |
-| reporium-ingestion schedule: Nightly Graph Build | ✓ PASS | success (started 2026-05-13T16:39:39Z) |
-| reporium-api schedule: Data Quality Check | ✓ PASS | success (started 2026-05-13T11:23:45Z) |
+| forksync schedule: Nightly Fork Sync | ✗ FAIL | failure (started 2026-05-15T08:54:15Z) |
+| reporium-db schedule: Nightly Sync | ✗ FAIL | failure (started 2026-05-15T07:53:44Z) |
+| reporium-ingestion schedule: Nightly Graph Build | ✓ PASS | success (started 2026-05-14T16:27:52Z) |
+| reporium-api schedule: Data Quality Check | ✓ PASS | success (started 2026-05-14T11:07:57Z) |
 | knowledge graph edge counts | ? SKIP | DATABASE_URL not set -- audit runner has no DB credentials |
 | cloud run candidate tags | ✓ PASS | No candidate tags harvested from recent deploy runs |
 | leaks: perditioinc/reporium-api README | ✓ PASS | No forbidden emails |
@@ -60,4 +60,4 @@
 | leaks: perditioinc/reporium-events README | ✓ PASS | No forbidden emails |
 | leaks: perditioinc/reporium-metrics README | ✓ PASS | No forbidden emails |
 
-*Generated at 2026-05-14T10:02:47.860132+00:00*
+*Generated at 2026-05-15T10:09:54.698851+00:00*
