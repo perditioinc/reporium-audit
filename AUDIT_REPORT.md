@@ -1,4 +1,4 @@
-# Reporium Audit Report — 2026-06-04
+# Reporium Audit Report — 2026-06-05
 
 ## Summary
 
@@ -6,10 +6,10 @@
 
 ## Failures
 
-- **reporium-db index.json fresh**: Updated 123.1h ago
+- **reporium-db index.json fresh**: Updated 147.3h ago
 - **forksync CI**: Nightly Fork Sync: failure
 - **reporium-audit CI**: Nightly Audit: None
-- **forksync schedule: Nightly Fork Sync**: failure (started 2026-06-04T10:02:53Z)
+- **forksync schedule: Nightly Fork Sync**: failure (started 2026-06-05T09:59:49Z)
 
 ## Warnings
 
@@ -31,7 +31,7 @@
 | static artifact: no private repos exposed | ✓ PASS | 1937 repos checked, none private |
 | cache vs db: repo detail consistency | ✓ PASS | 15/15 sampled repos have /repos/<slug> categories that include the /library/full dbCategory column value |
 | reporium-db repo count | ✓ PASS | 1832 repos |
-| reporium-db index.json fresh | ✗ FAIL | Updated 123.1h ago |
+| reporium-db index.json fresh | ✗ FAIL | Updated 147.3h ago |
 | forksync CI | ✗ FAIL | Nightly Fork Sync: failure |
 | reporium-db CI | ✓ PASS | Nightly Sync: success |
 | reporium-dataset CI | ✓ PASS | Nightly README Update: success |
@@ -43,10 +43,10 @@
 | reporium-ingestion CI | ✓ PASS | Nightly Enrichment Quality Probe: success |
 | reporium-events CI | ✓ PASS | Security Scan: success |
 | reporium-audit CI | ✗ FAIL | Nightly Audit: None |
-| forksync schedule: Nightly Fork Sync | ✗ FAIL | failure (started 2026-06-04T10:02:53Z) |
-| reporium-db schedule: Nightly Sync | ✓ PASS | success (started 2026-06-04T08:51:18Z) |
-| reporium-ingestion schedule: Nightly Graph Build | ✓ PASS | success (started 2026-06-03T18:35:02Z) |
-| reporium-api schedule: Data Quality Check | ✓ PASS | success (started 2026-06-03T13:03:59Z) |
+| forksync schedule: Nightly Fork Sync | ✗ FAIL | failure (started 2026-06-05T09:59:49Z) |
+| reporium-db schedule: Nightly Sync | ✓ PASS | success (started 2026-06-05T08:43:47Z) |
+| reporium-ingestion schedule: Nightly Graph Build | ✓ PASS | success (started 2026-06-04T17:28:38Z) |
+| reporium-api schedule: Data Quality Check | ✓ PASS | success (started 2026-06-04T11:42:58Z) |
 | knowledge graph edge counts | ? SKIP | DATABASE_URL not set -- audit runner has no DB credentials |
 | cloud run candidate tags | ✓ PASS | No candidate tags harvested from recent deploy runs |
 | leaks: perditioinc/reporium-api README | ✓ PASS | No forbidden emails |
@@ -57,4 +57,4 @@
 | leaks: perditioinc/reporium-events README | ✓ PASS | No forbidden emails |
 | leaks: perditioinc/reporium-metrics README | ✓ PASS | No forbidden emails |
 
-*Generated at 2026-06-04T10:52:08.024897+00:00*
+*Generated at 2026-06-05T11:00:55.639379+00:00*
