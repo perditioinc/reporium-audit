@@ -1,0 +1,6 @@
+{
+  "status": "ok",
+  "db": "ok",
+  "revision": "reporium-api-local-0001",
+  "pool": {"size": 5, "checked_out": 0, "overflow": 0}
+}
