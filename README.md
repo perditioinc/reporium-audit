@@ -1,5 +1,7 @@
 # reporium-audit
 
+![License: MIT](https://img.shields.io/badge/license-MIT-brightgreen)
+
 <!-- perditio-badges-start -->
 [![Audit](https://github.com/perditioinc/reporium-audit/actions/workflows/audit.yml/badge.svg)](https://github.com/perditioinc/reporium-audit/actions/workflows/audit.yml)
 ![Last Commit](https://img.shields.io/github/last-commit/perditioinc/reporium-audit)
