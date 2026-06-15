@@ -23,7 +23,24 @@ export GH_TOKEN=...
 python -m reporium_audit run
 ```
 
-Produces `AUDIT_REPORT.md` with full results table.
+Produces `AUDIT_REPORT.md` with:
+
+- **Summary** — pass / fail / warning counts.
+- **Next Actions** — the on-call-operator's cheat sheet. Every failure
+  (and warning) gets a remediation hint and, when the check names a
+  repo, a direct link to its GitHub Actions tab. Well-understood
+  failures come first so they can be cleared fast; failures we don't
+  yet have a hint for appear last, without a hint, so genuinely novel
+  issues stand out rather than blend in.
+- **Failures / Warnings** — the flat list, kept for backwards
+  compatibility with downstream consumers (nightly diff, issue
+  creator).
+- **Full Results** table — every check, with a `Hint` column that is
+  empty unless the check has a registered remediation hint.
+
+Hint coverage is defined in `reporium_audit.reporter.REMEDIATION_HINTS`
+and is derived purely from check names — no check has to emit extra
+metadata for its failure to get a hint.
 
 ## Nightly Schedule
 
