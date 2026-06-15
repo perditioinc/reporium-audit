@@ -3,8 +3,14 @@
 from __future__ import annotations
 
 import os
+from datetime import datetime, timezone
 
-import psycopg2
+try:  # psycopg2 is an optional dep — if not installed, check self-skips.
+    import psycopg2  # type: ignore
+except ImportError:  # pragma: no cover - exercised by env rather than code
+    psycopg2 = None  # type: ignore
+
+GRAPH_STALE_HOURS = 25
 
 
 async def check_knowledge_graph(db_url: str) -> list[dict]:
@@ -26,8 +32,16 @@ async def check_knowledge_graph(db_url: str) -> list[dict]:
     if not db_url:
         results.append({
             "check": "knowledge graph edge counts",
-            "status": "FAIL",
+            "status": "SKIP",
             "detail": "DATABASE_URL not set",
+        })
+        return results
+
+    if psycopg2 is None:
+        results.append({
+            "check": "knowledge graph edge counts",
+            "status": "SKIP",
+            "detail": "psycopg2 not installed",
         })
         return results
 
@@ -73,6 +87,27 @@ async def check_knowledge_graph(db_url: str) -> list[dict]:
 
     latest_run_id = run_order[0]
     latest = runs[latest_run_id]
+
+    # --- Check 0: Latest run is fresh (< GRAPH_STALE_HOURS old) ---
+    # ``rows`` is DESC by ``started_at``, so the first row's timestamp is
+    # the freshest we have.
+    latest_started_at = rows[0][3]
+    if isinstance(latest_started_at, datetime):
+        if latest_started_at.tzinfo is None:
+            latest_started_at = latest_started_at.replace(tzinfo=timezone.utc)
+        hours_ago = (datetime.now(timezone.utc) - latest_started_at).total_seconds() / 3600
+        fresh = hours_ago < GRAPH_STALE_HOURS
+        results.append({
+            "check": "knowledge graph build freshness",
+            "status": "PASS" if fresh else "FAIL",
+            "detail": f"Latest run started {hours_ago:.1f}h ago (threshold {GRAPH_STALE_HOURS}h)",
+        })
+    else:
+        results.append({
+            "check": "knowledge graph build freshness",
+            "status": "WARN",
+            "detail": f"started_at not a datetime: {type(latest_started_at).__name__}",
+        })
 
     # --- Check 1: DEPENDS_ON > 0 in most recent run ---
     depends_on_count = latest.get("DEPENDS_ON", 0)

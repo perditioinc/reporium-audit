@@ -29,3 +29,15 @@ def test_generate_report_with_warnings():
     ]
     report = generate_report(results)
     assert "Warnings" in report
+
+
+def test_generate_report_with_skips():
+    results = [
+        {"check": "api /health", "status": "PASS", "detail": "ok"},
+        {"check": "kg edges", "status": "SKIP", "detail": "DATABASE_URL not set"},
+    ]
+    report = generate_report(results)
+    assert "Skipped" in report
+    assert "DATABASE_URL not set" in report
+    # A SKIP must not be counted as a failure.
+    assert "failures" not in report.lower()
