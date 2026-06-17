@@ -1,0 +1,7 @@
+# Shell scripts are bind-mounted into Linux containers; they MUST stay LF so
+# the shebang and `set -eu` work regardless of the host OS / git autocrlf.
+*.sh text eol=lf
+Dockerfile text eol=lf
+*.Dockerfile text eol=lf
+docker-compose.yml text eol=lf
+nginx.conf text eol=lf
