@@ -118,6 +118,33 @@ async def test_clean_public_originals_pass():
     assert leak_row["status"] == "PASS"
 
 
+@pytest.mark.asyncio
+@respx.mock
+async def test_private_fork_still_fails():
+    """The 2026-04-26 fix decoupled ``isFork`` from privacy -- but it must not
+    swing the other way and let a fork that is ALSO private leak through.
+
+    A private repo that happens to be a fork is still a private-exposure
+    failure. Privacy classification keys on ``isPrivate``/``is_private``
+    only; ``isFork`` must neither trigger nor suppress the leak row.
+    """
+    repos = [
+        _repo("public-fork", is_fork=True),
+        _repo("private-fork", is_fork=True, privacy="private"),
+    ]
+    respx.get(LIBRARY_FULL_URL).mock(
+        return_value=httpx.Response(200, json={"repos": repos})
+    )
+
+    results = await check_contract(API_URL)
+
+    leak_row = _row_named(results, "no private repos exposed")
+    assert leak_row["status"] == "FAIL"
+    assert "private-fork" in leak_row["detail"]
+    # The public fork must NOT be listed as a leak.
+    assert "public-fork" not in leak_row["detail"]
+
+
 # ---------------------------------------------------------------------------
 # Private-exposure detection — both naming conventions, both rows
 # ---------------------------------------------------------------------------
