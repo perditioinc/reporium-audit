@@ -4,6 +4,12 @@ on:
     - cron: '0 8 * * *'
   workflow_dispatch:
 
+# Serialise nightly runs so two jobs never race the dev -> main publish.
+# Do NOT cancel in-progress: a half-finished publish is worse than a wait.
+concurrency:
+  group: nightly-audit-publish
+  cancel-in-progress: false
+
 permissions:
   contents: write
   issues: write
@@ -16,9 +22,20 @@ jobs:
       GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      # GitFlow-compliant nightly data publish:
+      #   1. check out dev (every change flows through dev),
+      #   2. run the data-gen step,
+      #   3. commit any *tracked* generated files to dev ([skip ci]),
+      #   4. publish by fast-forwarding main to dev in the same job.
+      # AUDIT_REPORT.md is a generated artifact and is gitignored on dev,
+      # so it is intentionally NOT committed here -- it is regenerated each
+      # run. The bot no longer writes main directly outside dev -> main.
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5  # v4.3.1
+        with:
+          ref: dev
+          fetch-depth: 0
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065  # v5.6.0
         with:
           python-version: '3.12'
 
@@ -27,20 +44,33 @@ jobs:
       - name: Run audit
         run: python -m reporium_audit run
 
-      - name: Commit audit report
+      - name: Commit generated snapshot to dev and publish to main
         run: |
+          set -euo pipefail
           git config user.name 'perditio-bot'
           git config user.email 'bot@perditio.com'
-          git add AUDIT_REPORT.md
-          git diff --staged --quiet && echo "No changes" || git commit -m "audit: nightly report $(date -u +%Y-%m-%d)"
-          git push
+
+          # Stage only tracked, non-ignored changes. AUDIT_REPORT.md is
+          # gitignored, so `git add -A` will not re-track it.
+          git add -A
+          if git diff --staged --quiet; then
+            echo "No tracked changes to commit on dev."
+          else
+            git commit -m "chore(data): nightly snapshot $(date -u +%Y-%m-%d) [skip ci]"
+            git push origin HEAD:dev
+          fi
+
+          # Publish: fast-forward main to dev. This is a guaranteed FF
+          # because every change now flows through dev, so main is always
+          # an ancestor of dev. --no-verify is intentionally NOT used.
+          git push origin dev:main
 
       - name: Create issue on failure
         if: failure()
         run: |
           gh issue create \
             --title "Audit failure $(date -u +%Y-%m-%d)" \
-            --body "Nightly audit detected failures. See AUDIT_REPORT.md for details." \
+            --body "Nightly audit detected failures. See the run logs for details (AUDIT_REPORT.md is generated at runtime and not committed)." \
             --repo perditioinc/reporium-audit
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}

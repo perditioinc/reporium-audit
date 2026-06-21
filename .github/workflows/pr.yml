@@ -1,0 +1,34 @@
+name: PR
+
+on:
+  pull_request:
+    branches: [main]
+
+# Cancel in-progress runs on the same PR when a new commit is pushed.
+concurrency:
+  group: pr-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Unit tests (Python 3.11)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5  # v4.3.1
+
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065  # v5.6.0
+        with:
+          python-version: "3.11"
+
+      - name: Install dev dependencies
+        run: pip install -e ".[dev]"
+
+      # Unit tests only. All HTTP-touching tests use respx.mock so this
+      # job does NOT hit any live URL (no REPORIUM_API_URL, no GH_TOKEN).
+      # The nightly audit (audit.yml) is the only workflow that probes
+      # live infrastructure.
+      - name: Run unit tests
+        run: pytest tests/ -v
