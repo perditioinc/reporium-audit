@@ -1,4 +1,22 @@
 .pytest_cache/
 __pycache__/
 *.egg-info/
+
+# Generated audit report -- produced at runtime by `python -m reporium_audit run`.
+# Never tracked in git; the nightly bot regenerates it each run.
 AUDIT_REPORT.md
+
+# Data artifacts pulled/generated during audit runs -- never commit these.
+# library_full.json is a full dump of /library/full (can contain the entire
+# catalog incl. private-classification fields); latency-*.json are probe
+# timing dumps. Keep them local.
+library_full.json
+latency-*.json
+data/
+snapshot/
+checkpoints/
+
+# Local audit scratch output (dated operator packs committed under .audit/
+# are tracked deliberately; this ignores ad-hoc local exports written there).
+.audit/tmp/
+.audit/*.local.md
